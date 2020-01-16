@@ -1,0 +1,13 @@
+{
+    "name": "sl1k3/telegram_bot",
+    "license": "MIT",
+    "require": {
+        "twig/twig": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "TelegramBot\\": "TelegramBot/",
+            "TelegramTwig\\": "TelegramTwig/"
+        }
+    }
+}
