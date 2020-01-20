@@ -44,7 +44,7 @@ class PsyUpgradeBot extends Bot
             $sMessage = 'Ошибка выполнения запроса';
         }
 
-        self::sendMessage($sMessage, $iChatId);
+        return $sMessage;
     }
 
     public static function sendSiteRequest($sMethod, array $aParams)

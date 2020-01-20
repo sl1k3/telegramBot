@@ -151,7 +151,11 @@ abstract class Bot
             $sParam = trim(mb_substr($aMessage['text'], $aEntiny['offset'] + $aEntiny['length']));
 
             if (method_exists(static::class, $sMethod)) {
-                (static::class)::$sMethod($sParam);
+                $sResponse = (static::class)::$sMethod($sParam);
+
+                if ($sResponse !== null) {
+                    static::sendMessage((string)$sResponse, $aMessage['chat']['id']);
+                }
             }
         }
     }
