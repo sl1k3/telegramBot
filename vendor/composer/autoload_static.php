@@ -15,8 +15,8 @@ class ComposerStaticInit3cf44e0f48bd67f07d72bda4de8da9e9
         'T' => 
         array (
             'Twig\\' => 5,
+            'Telegram\\' => 9,
             'TelegramTwig\\' => 13,
-            'TelegramBot\\' => 12,
         ),
         'S' => 
         array (
@@ -30,13 +30,13 @@ class ComposerStaticInit3cf44e0f48bd67f07d72bda4de8da9e9
         array (
             0 => __DIR__ . '/..' . '/twig/twig/src',
         ),
+        'Telegram\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/Telegram',
+        ),
         'TelegramTwig\\' => 
         array (
             0 => __DIR__ . '/../..' . '/TelegramTwig',
-        ),
-        'TelegramBot\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/TelegramBot',
         ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (

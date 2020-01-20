@@ -7,8 +7,8 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Twig\\' => array($vendorDir . '/twig/twig/src'),
+    'Telegram\\' => array($baseDir . '/Telegram'),
     'TelegramTwig\\' => array($baseDir . '/TelegramTwig'),
-    'TelegramBot\\' => array($baseDir . '/TelegramBot'),
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
 );
