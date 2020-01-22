@@ -31,20 +31,56 @@ class PsyUpgradeBot extends Bot
 
     public static function commandPaydate()
     {
+        return self::handleCommand('getPayDate');
+    }
+
+    public static function commandChprice($sPrice)
+    {
+        return self::handleCommand('updateFields', [
+            'field' => 'price',
+            'value' => $sPrice
+        ]);
+    }
+
+    public static function commandChdesc($sDescription)
+    {
+        return self::handleCommand('updateFields', [
+            'field' => 'content',
+            'value' => $sDescription
+        ]);
+    }
+
+    public static function commandChmode($sMode)
+    {
+        return self::handleCommand('updateFields', [
+            'field' => 'work_mode',
+            'value' => $sMode
+        ]);
+    }
+
+    public static function commandChspec($sSpecialty)
+    {
+        return self::handleCommand('updateFields', [
+            'field' => 'specialty',
+            'value' => $sSpecialty
+        ]);
+    }
+
+    public static function commandSync($sPhone)
+    {
+        return self::handleCommand('sync', [
+            'phone' => $sPhone
+        ]);
+    }
+
+    public static function handleCommand($sMethod, array $aParams = [])
+    {
         $aRequest = self::getRequest();
         $iChatId = $aRequest['message']['chat']['id'];
 
-        $aResponse = self::sendSiteRequest('getPayDate', [
-            'chat_id' => $iChatId,
-        ]);
+        $aResponse = self::sendSiteRequest($sMethod, $aParams + ['chat_id' => $iChatId]);
 
-        if ($aResponse['ok']) {
-            $sMessage = 'Дата истечения платежа: ' . $aResponse['result'];
-        } else {
-            $sMessage = 'Ошибка выполнения запроса';
-        }
-
-        return $sMessage;
+        return $aResponse['result'];
     }
 
     public static function sendSiteRequest($sMethod, array $aParams)
