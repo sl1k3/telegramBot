@@ -10,13 +10,34 @@ class PsyUpgradeBot extends Bot
 
     protected static $sUserPwd = 'user38467:lj5kh7';
 
-    private static $sChannelId = -1001493539224;
+    private static $sChannelId = -1001457250558;
 
     private static $sSiteApuUrl = 'https://psyupgrade.com/wp-json';
 
     public static function getToken()
     {
         return '1032203058:AAGZI9--H8pFQITMONLxF_7xXNLx1oihKpE';
+    }
+
+    public static function handle()
+    {
+        $aRequest = self::getRequest();
+
+        if (isset($aRequest['action']) && $aRequest['action'] == 'sendAppeal') {
+            $iChatId = (isset($aRequest['chat_id'])) ? $aRequest['chat_id'] : self::$sChannelId;
+
+            if ($iChatId !== self::$sChannelId) {
+                unset($aRequest['data']['specialty']);
+            }
+
+            $sAppeal = Twig::parse('appeal.twig', $aRequest['data']);
+
+            self::sendMessage($sAppeal, $iChatId);
+        } else {
+            if ($aRequest['message']['chat']['id'] !== self::$sChannelId) {
+                parent::handle();
+            }
+        }
     }
 
     public static function commandStart()
@@ -110,6 +131,11 @@ class PsyUpgradeBot extends Bot
         }
 
         return $aResponse;
+    }
+
+    public static function sendAppeal()
+    {
+
     }
 
     public static function unknownHandler()

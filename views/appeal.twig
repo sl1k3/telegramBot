@@ -1,4 +1,9 @@
+{% if specialty %}
+Новая заявка для <b>{{ specialty }}</b>
+от <b>{{ name }}</b>
+{% else %}
 Новая заявка от <b>{{ name }}</b>
+{% endif %}
 <b>Категория:</b> {{ category }}
 <b>Телефон:</b> {{ phone }}
 <b>Вариант связи:</b> {{ communicationOption }}
