@@ -97,7 +97,7 @@ class PsyUpgradeBot extends Bot
         return Twig::parse('start.twig');
     }
 
-    public static function commandCmdlist()
+    public static function commandHelp()
     {
         return Twig::parse('commandList.twig');
     }
