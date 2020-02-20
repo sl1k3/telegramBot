@@ -40,6 +40,64 @@ class PsyUpgradeBot extends Bot
         }
     }
 
+    public static function handlePhoto()
+    {
+        $aRequest = self::getRequest();
+        $aPhotos = $aRequest['message']['photo'];
+        $aPhoto = $aPhotos[count($aPhotos) - 1];
+
+        $sFilePath = self::downloadPhoto($aPhoto);
+
+        if ($sFilePath) {
+            self::handleCommand('updatePhoto', [
+                'url' => $sFilePath,
+                'width' => $aPhoto['width'],
+                'height' => $aPhoto['height'],
+                'size' => $aPhoto['file_size']
+            ]);
+        }
+    }
+
+    public static function downloadPhoto($aPhoto)
+    {
+        self::sendRequest('getFile', ['file_id' => $aPhoto['file_id']]);
+        if (self::isOk()) {
+            $sFilePath = self::getResult()['file_path'];
+            $sUrl = 'https://api.telegram.org/file/bot' . self::getToken() . "/$sFilePath";
+
+            $ch = curl_init($sUrl);
+            $fd = fopen(dirname(__DIR__) . "/$sFilePath", 'w');
+            curl_setopt($ch, CURLOPT_FILE, $fd);
+
+            if (static::$sProxy && static::$sUserPwd) {
+                curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+                curl_setopt($ch, CURLOPT_PROXY, static::$sProxy);
+                curl_setopt($ch, CURLOPT_PROXYUSERPWD, static::$sUserPwd);
+            }
+
+            $bCurlExec = curl_exec($ch);
+            curl_close($ch);
+            fclose($fd);
+
+            if ($bCurlExec) {
+                $sProtocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://';
+                $sUrl = $sProtocol . $_SERVER['HTTP_HOST'];
+                return $sUrl . "/$sFilePath";
+            }
+        }
+
+        return false;
+    }
+
+    public static function validatePhoto($aPhoto)
+    {
+        if ($aPhoto['width'] >= 300 && $aPhoto['height'] >= 350 && $aPhoto['file_size'] / 1048576 <= 5) {
+            return true;
+        }
+
+        return false;
+    }
+
     public static function commandStart()
     {
         return Twig::parse('start.twig');

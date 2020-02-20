@@ -21,6 +21,8 @@ abstract class Bot
 
     abstract public static function getToken();
 
+    abstract public static function handlePhoto();
+
     public static function init()
     {
     }
@@ -123,6 +125,17 @@ abstract class Bot
         return false;
     }
 
+    public static function isHavePhoto()
+    {
+        $aRequest = static::getRequest();
+
+        if (isset($aRequest['message']['photo'])) {
+            return true;
+        }
+
+        return false;
+    }
+
     public static function handle()
     {
         $aRequest = static::getRequest();
@@ -132,6 +145,8 @@ abstract class Bot
 
             if (static::isCommand()) {
                 static::executeCommand();
+            } elseif (static::isHavePhoto()) {
+                static::handlePhoto();
             } elseif (static::unknownHandler() !== null) {
                 static::sendMessage(static::unknownHandler(), $aMessage['chat']['id']);
             }
