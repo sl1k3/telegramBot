@@ -49,12 +49,15 @@ class PsyUpgradeBot extends Bot
         $sFilePath = self::downloadPhoto($aPhoto);
 
         if ($sFilePath) {
-            self::handleCommand('updatePhoto', [
+            $sMessage = self::handleCommand('updatePhoto', [
                 'url' => $sFilePath,
                 'width' => $aPhoto['width'],
                 'height' => $aPhoto['height'],
                 'size' => $aPhoto['file_size']
             ]);
+
+            self::sendMessage($sMessage, $aRequest['message']['chat']['id']);
+            unlink(dirname(__DIR__) . "/$sFilePath");
         }
     }
 
@@ -84,15 +87,6 @@ class PsyUpgradeBot extends Bot
                 $sUrl = $sProtocol . $_SERVER['HTTP_HOST'];
                 return $sUrl . "/$sFilePath";
             }
-        }
-
-        return false;
-    }
-
-    public static function validatePhoto($aPhoto)
-    {
-        if ($aPhoto['width'] >= 300 && $aPhoto['height'] >= 350 && $aPhoto['file_size'] / 1048576 <= 5) {
-            return true;
         }
 
         return false;
