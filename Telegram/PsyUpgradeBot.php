@@ -57,8 +57,9 @@ class PsyUpgradeBot extends Bot
             ]);
 
             self::sendMessage($sMessage, $aRequest['message']['chat']['id']);
-            unlink(dirname(__DIR__) . "/$sFilePath");
         }
+
+        unlink(dirname(__DIR__) . "/$sFilePath");
     }
 
     public static function downloadPhoto($aPhoto)
